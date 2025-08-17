@@ -1,48 +1,130 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JinzStudio</title>
+  <title>GOOD JOB GAMES – Policies</title>
+  <meta name="description" content="Terms of Services, Privacy Policy and Use Explicit Consent">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="container">
-    <h1>JINZSTUDIO</h1>
-    <p class="subtitle">游戏开发 / Godot / C++</p>
-    <nav class="nav">
-      <a href="#about">关于我</a>
-      <a href="#projects">项目</a>
-      <a href="#contact">联系</a>
-    </nav>
+    <h1>GOOD JOB GAMES</h1>
   </header>
 
+  <!-- Tabs -->
+  <nav class="tabbar" role="tablist" aria-label="Policies">
+    <button class="tab" role="tab" data-target="terms"   id="tab-terms"   aria-controls="panel-terms"   aria-selected="true">Terms of Services</button>
+    <button class="tab" role="tab" data-target="privacy" id="tab-privacy" aria-controls="panel-privacy" aria-selected="false">Privacy Policy</button>
+    <button class="tab" role="tab" data-target="consent" id="tab-consent" aria-controls="panel-consent" aria-selected="false">Use Explicit Consent</button>
+    <!-- 如需语言切换，可把这个下拉放右侧 -->
+    <!-- <div class="lang"><select><option>English</option></select></div> -->
+  </nav>
+
   <main class="container">
-    <section id="about">
-      <h2>关于我</h2>
-      <p>一句话介绍：我专注于 Godot 与 C++ 的游戏开发与教学。</p>
+    <p class="updated">Last Updated: December 4, 2019</p>
+
+    <!-- Panels -->
+    <section id="panel-terms"   role="tabpanel" aria-labelledby="tab-terms"   class="panel is-active">
+      <h2>Terms of Services</h2>
+      <div class="card">
+        <h3>TERMS OF SERVICES</h3>
+        <p>This Terms of Services (“Agreement”) governs the relationship between the user and Good Job Games (“GJG”). Please read this Agreement and our Privacy Policy carefully before using the Services.</p>
+        <ol>
+          <li><strong>Right of Use.</strong> By using the Services you confirm that you are older than 18, or older than 16 with parental consent.</li>
+          <li><strong>Commercial Use.</strong> Commercial use is prohibited. The Services are provided for entertainment within personal use.</li>
+          <li><strong>Acceptance.</strong> Downloading or using any of our games constitutes acceptance of this Agreement.</li>
+        </ol>
+      </div>
     </section>
 
-    <section id="projects">
-      <h2>项目</h2>
-      <ul>
-        <li><a href="https://github.com/yourname/your-project">示例项目 A</a></li>
-        <li><a href="https://github.com/yourname/another-project">示例项目 B</a></li>
-      </ul>
+    <section id="panel-privacy" role="tabpanel" aria-labelledby="tab-privacy" class="panel" hidden>
+      <h2>Privacy Policy</h2>
+      <div class="card">
+        <p>We collect minimal analytics to improve gameplay experience. Data may include device type, gameplay session length and crash logs. We do not collect personal identifiers without your explicit consent.</p>
+        <h3>Data We Process</h3>
+        <ul>
+          <li>Device & diagnostic data</li>
+          <li>Gameplay events & crash reports</li>
+          <li>Country/region (approximate)</li>
+        </ul>
+        <h3>Your Rights</h3>
+        <ul>
+          <li>Access, correction and deletion of your data</li>
+          <li>Opt-out of analytics</li>
+          <li>Contact: <a href="mailto:privacy@example.com">privacy@example.com</a></li>
+        </ul>
+      </div>
     </section>
 
-    <section id="contact">
-      <h2>联系</h2>
-      <p>Email：you@example.com · B站：@yourid · 小红书：@yourid</p>
+    <section id="panel-consent" role="tabpanel" aria-labelledby="tab-consent" class="panel" hidden>
+      <h2>Use Explicit Consent</h2>
+      <div class="card">
+        <p>Some optional features (such as personalized ads or cloud backup) require your explicit consent. You may grant or withdraw consent at any time inside the game settings.</p>
+        <h3>Consent Options</h3>
+        <ul>
+          <li>Personalized advertising</li>
+          <li>Cloud save & account linking</li>
+          <li>Beta program participation</li>
+        </ul>
+        <p>To withdraw consent, open <em>Settings → Privacy</em> and toggle the relevant options off, or contact us.</p>
+      </div>
     </section>
   </main>
 
-  <footer class="container">
-    © <span id="y"></span> JinzStudio · 托管于 GitHub Pages
+  <footer class="container foot">
+    © <span id="y"></span> GOOD JOB GAMES
   </footer>
 
   <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
+    // --- Tabs logic with deep-linking (#terms | #privacy | #consent)
+    (function () {
+      const map = { terms:'panel-terms', privacy:'panel-privacy', consent:'panel-consent' }
+      const tabs = Array.from(document.querySelectorAll('.tab'))
+      const panels = Array.from(document.querySelectorAll('.panel'))
+
+      function show(key, push=true){
+        const id = map[key] || map.terms
+        // update tabs
+        tabs.forEach(t=>{
+          const active = t.dataset.target === key
+          t.setAttribute('aria-selected', String(active))
+          t.classList.toggle('is-active', active)
+        })
+        // update panels
+        panels.forEach(p=>{
+          const active = p.id === id
+          p.hidden = !active
+          p.classList.toggle('is-active', active)
+        })
+        if (push) history.pushState({key}, '', '#'+key)
+        document.title = 'GOOD JOB GAMES – ' + (key==='terms'?'Terms of Services': key==='privacy'?'Privacy Policy':'Use Explicit Consent')
+      }
+
+      tabs.forEach(btn=>{
+        btn.addEventListener('click', ()=> show(btn.dataset.target))
+        btn.addEventListener('keydown', (e)=>{
+          // arrow key navigation
+          if(e.key==='ArrowRight' || e.key==='ArrowLeft'){
+            e.preventDefault()
+            const i = tabs.indexOf(btn)
+            const nxt = e.key==='ArrowRight' ? (i+1)%tabs.length : (i-1+tabs.length)%tabs.length
+            tabs[nxt].focus()
+          }
+        })
+      })
+
+      window.addEventListener('popstate', (e)=> show((e.state && e.state.key) || getKeyFromHash(), false))
+
+      function getKeyFromHash(){
+        const h = (location.hash || '#terms').replace('#','')
+        return ['terms','privacy','consent'].includes(h) ? h : 'terms'
+      }
+
+      // initial
+      show(getKeyFromHash(), false)
+      document.getElementById('y').textContent = new Date().getFullYear()
+    })();
   </script>
 </body>
 </html>
