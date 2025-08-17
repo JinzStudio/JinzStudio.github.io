@@ -20,7 +20,7 @@ h1{ margin: 0; letter-spacing: .02em; }
   cursor: pointer; font-weight: 600;
 }
 .tab.is-active{ opacity: 1; box-shadow: inset 0 -2px 0 rgba(255,255,255,.25); }
-.tab:focus-visible{ outline: 2px solid #84caff; outline-offset: 2px; }
+.tab:focus-visible{ outline: 2px solid #84cafe; outline-offset: 2px; }
 .lang{ margin-left: auto; }
 
 .panel{ display: block; }
